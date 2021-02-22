@@ -123,3 +123,16 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+
+# Custom Stuff
+.gitignore
+trash
+Backups
+*.xml
+designer.exe.lnk
+knowledge.txt
+start_gui.bat
+tester.py
+ui to py.bat
+
