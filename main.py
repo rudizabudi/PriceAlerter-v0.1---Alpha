@@ -1,8 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QWidget, QApplication, QFileDialog
 import sys
-import os
-from time import sleep
 import threading
 
 #custom imports
@@ -10,9 +8,9 @@ import windows.gui.qtgui as qtgui
 import windows.popups.popup_handler as ph
 
 import windows.popups.add_type_selection as ats
-from config import command_ledger, data_ledger
+from config import command_ledger
 import data_handler
-import data_updater
+
 
 
 from yahoofinancials import YahooFinancials

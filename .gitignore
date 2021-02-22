@@ -127,8 +127,8 @@ dmypy.json
 
 # Custom Stuff
 .gitignore
-trash
-Backups
+trash/
+Backups/
 *.xml
 designer.exe.lnk
 knowledge.txt
