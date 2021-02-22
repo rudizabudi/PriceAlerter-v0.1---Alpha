@@ -1,0 +1,7 @@
+-- Create python code from designer
+	Save file
+	Open file-path in command prompt
+	enter: pyuic5 -x filename.ui -o outputfilename.py
+		- x executable
+		- o outputfile
+
