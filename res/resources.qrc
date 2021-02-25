@@ -11,5 +11,10 @@
 	<file>images/rootobject_settings.png</file>
 	<file>images/addtype_alert.png</file>
 	<file>images/addtype_watch.png</file>
+	<file>images/file_new.png</file>
+	<file>images/file_open.png</file>
+	<file>images/file_save.png</file>
+	<file>images/file_saveas.png</file>
+	<file>images/file_close.png</file>
 </qresource>
 </RCC>

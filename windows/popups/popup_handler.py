@@ -1,25 +1,35 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QMainWindow, QWidget, QApplication, QFileDialog, QMessageBox
-import sys
-import time
-import windows.popups.add_alert_popup_second as aaps
-import main
-from config import command_ledger, data_ledger
-import windows.popups.add_type_selection as ats
-import windows.popups.add_alert_popup_first as aapf
+from PyQt5 import QtWidgets
+from PyQt5.QtWidgets import QFileDialog, QMessageBox
 import os
-import windows.popups.add_alertlist_popup as aalp
 
+from config import command_ledger, data_ledger
+import windows.popups.add_alert_popup_first as aapf
+import windows.popups.add_alert_popup_second as aaps
+import windows.popups.add_watch_popup as awp
+import windows.popups.add_alertlist_popup as aalp
+import windows.popups.add_watchlist_popup as awlp
+import windows.popups.add_type_selection as ats
+import windows.popups.settings as stg
 
 
 def popup_triggers(window_name, root_ui=None, popup_ui=None, popup=None, params=None):
-    if window_name == 'addAlertList':
+
+    if window_name == 'addTypeSelection':
+        #TODO Move to popup handler
+        add_type_popup = QtWidgets.QMainWindow()
+        add_type_ui = ats.Ui_Form()
+        add_type_ui.setupUi(add_type_popup)
+        add_type_popup.show()
+
+        add_type_ui.toolButton_alertAdd.clicked.connect(lambda: popup_triggers('addAlertOne', root_ui=root_ui, popup=add_type_popup))
+        add_type_ui.toolButton_watchAdd.clicked.connect(lambda: popup_triggers('addWatch', root_ui=root_ui, popup=add_type_popup))
+
+    elif window_name == 'addAlertList':
         global alertlist_popup
         alertlist_popup = QtWidgets.QMainWindow()
         alertlist_ui = aalp.Ui_Form()
         alertlist_ui.setupUi(alertlist_popup)
         alertlist_popup.show()
-
 
         alertlist_ui.lineEdit_NewAlertName.returnPressed.connect(lambda: command_ledger.append({'addList': ['Alert', alertlist_ui.lineEdit_NewAlertName.text()]}))
         alertlist_ui.lineEdit_NewAlertName.returnPressed.connect(lambda: alertlist_popup.close())
@@ -27,6 +37,18 @@ def popup_triggers(window_name, root_ui=None, popup_ui=None, popup=None, params=
         alertlist_ui.pushButton_Add.clicked.connect(lambda: alertlist_popup.close())
         alertlist_ui.pushButton_Cancel.clicked.connect(lambda: alertlist_popup.close())
 
+    elif window_name == 'addWatchList':
+        global watchlist_popup
+        watchlist_popup = QtWidgets.QMainWindow()
+        watchlist_ui = awlp.Ui_Form()
+        watchlist_ui.setupUi(watchlist_popup)
+        watchlist_popup.show()
+
+        watchlist_ui.lineEdit_NewWatchName.returnPressed.connect(lambda: command_ledger.append({'addList': ['Watch', watchlist_ui.lineEdit_NewWatchName.text()]}))
+        watchlist_ui.lineEdit_NewWatchName.returnPressed.connect(lambda: watchlist_popup.close())
+        watchlist_ui.pushButton_Add.clicked.connect(lambda: command_ledger.append({'addList': ['Watch', watchlist_ui.lineEdit_NewWatchName.text()]}))
+        watchlist_ui.pushButton_Add.clicked.connect(lambda: watchlist_popup.close())
+        watchlist_ui.pushButton_Cancel.clicked.connect(lambda: watchlist_popup.close())
 
     elif window_name == 'addAlertOne':
         popup.close()
@@ -35,14 +57,28 @@ def popup_triggers(window_name, root_ui=None, popup_ui=None, popup=None, params=
         alert_ui = aapf.Ui_Form()
         alert_ui.setupUi(alert_first_popup)
         alert_first_popup.show()
+
         alert_ui.comboBox_alertlistSelect.clear()
         alert_ui.comboBox_alertlistSelect.addItems([root_ui.listWidget_alertlists.item(i).text() for i in range(root_ui.listWidget_alertlists.count())])
-        alert_ui.pushButton_Continue.clicked.connect(lambda: popup_triggers('addAlertTwo', root_ui=root_ui, popup_ui=alert_ui, popup=alert_first_popup))
+        alert_ui.pushButton_Continue.clicked.connect(lambda: alert_first_popup.close())
+
+    elif window_name == 'addWatch':
+        popup.close()
+        global watch_popup
+        watch_popup = QtWidgets.QMainWindow()
+        watch_ui = awp.Ui_Form()
+        watch_ui.setupUi(watch_popup)
+        watch_popup.show()
+
+        watch_ui.comboBox_watchlistSelect.clear()
+        watch_ui.comboBox_watchlistSelect.addItems([root_ui.listWidget_watchlists.item(i).text() for i in range(root_ui.listWidget_watchlists.count())])
+        watch_ui.pushButton_Continue.clicked.connect(lambda: command_ledger.append({'addWatch': [watch_ui.comboBox_watchlistSelect.currentText(), watch_ui.lineEdit_name.text(), watch_ui.lineEdit_symbol.text()]}))
+        watch_ui.pushButton_Continue.clicked.connect(lambda: watch_popup.close())
 
     elif window_name == 'addAlertTwo':
         popup_ui.pushButton_Continue.clicked.connect(lambda: add_alert_second(popup_ui.comboBox_alertlistSelect.currentText(), popup_ui.lineEdit_name.text(), popup_ui.lineEdit_symbol.text()))
 
-        def add_alert_second(watchlist, name, symbol):
+        def add_alert_second(alertlist, name, symbol):
             popup.close()
             global alert_second_popup
             alert_second_popup = QtWidgets.QMainWindow()
@@ -83,10 +119,10 @@ def popup_triggers(window_name, root_ui=None, popup_ui=None, popup=None, params=
                                 alert_second_ui.toolButton_thresholdDelete.hide()
 
             modify_threshold_amount(0)
-            watchlist = watchlist.replace(' ', '_')
-            alert_second_ui.pushButton_Continue.clicked.connect(lambda: process_new_alerts(watchlist, name, symbol))
+            alertlist = alertlist.replace(' ', '_')
+            alert_second_ui.pushButton_Continue.clicked.connect(lambda: process_new_alerts(alertlist, name, symbol))
 
-            def process_new_alerts(watchlist, name, symbol):
+            def process_new_alerts(alertlist, name, symbol):
                 vis_counter = 0
                 for i in range(1, 6):
                     label = getattr(alert_second_ui, 'label_alert{}'.format(i))
@@ -107,7 +143,7 @@ def popup_triggers(window_name, root_ui=None, popup_ui=None, popup=None, params=
                                 reference = getattr(alert_second_ui, 'comboBox_reference{}'.format(i)).currentText()
                                 operator = getattr(alert_second_ui, 'comboBox_operator{}'.format(i)).currentText()
                                 threshold = getattr(alert_second_ui, 'lineEdit_threshold{}'.format(i)).text()
-                                command = {'addAlert': [watchlist, name, symbol, reference, operator, threshold]}
+                                command = {'addAlert': [alertlist, name, symbol, reference, operator, threshold]}
                                 command_ledger.append(command)
                                 alert_second_popup.close()
                     else:
@@ -120,14 +156,36 @@ def popup_triggers(window_name, root_ui=None, popup_ui=None, popup=None, params=
                 except Exception as e:
                     print(e)
 
+    elif window_name == 'settings':
+        global settings_popup
+        settings_popup = QtWidgets.QMainWindow()
+        settings_ui = stg.Ui_Form()
+        settings_ui.setupUi(settings_popup)
+        settings_popup.show()
+
+
+
+        def show_settings_page(page):
+            for child in settings_popup.children():
+                if child.objectName() not in ['_layout', 'treeWidget', 'pushButton_ApplyClose', 'pushButton_Cancel'] and page not in child.objectName():
+                    print(child.objectName(), ' hidden.')
+                    child.hide()
+
+        show_settings_page('alerts_mobile')
+
+
+
+
     elif window_name == 'savetofile':
 
-        filename = QFileDialog.getSaveFileName(root_ui, 'Save Lists', os.getcwd(), filter=('Watchlist (*.xml)'))[0]
+        filename = QFileDialog.getSaveFileName(root_ui, 'Save Lists', os.getcwd(), filter=('PriceWatcher (*.xml)'))[0]
         command_ledger.append({'savetofile': filename})
 
     elif window_name == 'openfile':
-        filename = QFileDialog.getOpenFileName(root_ui, 'Open saved watchlists', os.getcwd(), filter=('Watchlist (*.xml)'))[0]
+        filename = QFileDialog.getOpenFileName(root_ui, 'Open saved Lists', os.getcwd(), filter=('PriceWatcher (*.xml)'))[0]
         command_ledger.append({'openfile': filename})
+
+
 
 
 

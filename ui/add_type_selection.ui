@@ -63,7 +63,7 @@ color: rgb(234, 230, 228);</string>
     <enum>Qt::ToolButtonTextUnderIcon</enum>
    </property>
   </widget>
-  <widget class="QToolButton" name="toolButton_alertAdd_2">
+  <widget class="QToolButton" name="toolButton_watchAdd">
    <property name="geometry">
     <rect>
      <x>219</x>

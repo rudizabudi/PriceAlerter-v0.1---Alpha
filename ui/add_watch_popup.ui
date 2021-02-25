@@ -11,17 +11,42 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Add Alert</string>
+   <string>Add Watch</string>
   </property>
   <property name="styleSheet">
    <string notr="true">background-color: rgb(54, 54, 54);</string>
   </property>
+  <widget class="QPushButton" name="pushButton_Continue">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>160</y>
+     <width>100</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Roboto</family>
+     <pointsize>16</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgba(255, 255, 255, 0);
+color: rgb(234, 230, 228);</string>
+   </property>
+   <property name="text">
+    <string>Continue</string>
+   </property>
+  </widget>
   <widget class="QLabel" name="label_Alertlist">
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>20</y>
-     <width>90</width>
+     <y>23</y>
+     <width>110</width>
      <height>21</height>
     </rect>
    </property>
@@ -37,7 +62,7 @@
     <string notr="true">color: rgb(234, 230, 228);</string>
    </property>
    <property name="text">
-    <string>Alert List:</string>
+    <string>Watch List:</string>
    </property>
    <property name="textFormat">
     <enum>Qt::RichText</enum>
@@ -80,94 +105,6 @@
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_Alertlist_3">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>104</y>
-     <width>90</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Roboto</family>
-     <pointsize>14</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color: rgb(234, 230, 228);</string>
-   </property>
-   <property name="text">
-    <string>Symbol:</string>
-   </property>
-   <property name="textFormat">
-    <enum>Qt::RichText</enum>
-   </property>
-   <property name="scaledContents">
-    <bool>false</bool>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-  </widget>
-  <widget class="QComboBox" name="comboBox_alertlistSelect">
-   <property name="geometry">
-    <rect>
-     <x>140</x>
-     <y>13</y>
-     <width>253</width>
-     <height>36</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Roboto</family>
-     <pointsize>16</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color: rgb(234, 230, 228);</string>
-   </property>
-   <property name="currentText">
-    <string/>
-   </property>
-   <property name="placeholderText">
-    <string>Source</string>
-   </property>
-   <item>
-    <property name="text">
-     <string>Price</string>
-    </property>
-   </item>
-  </widget>
-  <widget class="QPushButton" name="pushButton_Continue">
-   <property name="geometry">
-    <rect>
-     <x>160</x>
-     <y>160</y>
-     <width>100</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Roboto</family>
-     <pointsize>16</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgba(255, 255, 255, 0);
-color: rgb(234, 230, 228);</string>
-   </property>
-   <property name="text">
-    <string>Continue</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="lineEdit_name">
@@ -220,9 +157,72 @@ color: rgb(234, 230, 228);</string>
     <set>Qt::AlignJustify|Qt::AlignVCenter</set>
    </property>
   </widget>
+  <widget class="QLabel" name="label_Alertlist_3">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>104</y>
+     <width>90</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Roboto</family>
+     <pointsize>14</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(234, 230, 228);</string>
+   </property>
+   <property name="text">
+    <string>Symbol:</string>
+   </property>
+   <property name="textFormat">
+    <enum>Qt::RichText</enum>
+   </property>
+   <property name="scaledContents">
+    <bool>false</bool>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="comboBox_watchlistSelect">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>13</y>
+     <width>253</width>
+     <height>36</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Roboto</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(234, 230, 228);</string>
+   </property>
+   <property name="currentText">
+    <string/>
+   </property>
+   <property name="placeholderText">
+    <string>Source</string>
+   </property>
+   <item>
+    <property name="text">
+     <string>Price</string>
+    </property>
+   </item>
+  </widget>
  </widget>
  <tabstops>
-  <tabstop>comboBox_alertlistSelect</tabstop>
+  <tabstop>comboBox_watchlistSelect</tabstop>
   <tabstop>lineEdit_name</tabstop>
   <tabstop>lineEdit_symbol</tabstop>
   <tabstop>pushButton_Continue</tabstop>
